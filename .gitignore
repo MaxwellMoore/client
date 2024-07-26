@@ -1,3 +1,17 @@
-/.DS_Store
-/.next
+# Node modules
 /node_modules
+
+# Next.js build output
+/.next
+
+# Tailwind CSS build output
+/tailwind.css
+
+# Environment variables
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# MacOS
+/.DS_Store
