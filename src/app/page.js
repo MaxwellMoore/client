@@ -1,6 +1,6 @@
 "use client";
 
-import Content from "../pages/home/components/TestLayout";
+import Content from "../components/TestLayout";
 
 export default function Home() {
   return <Content />;

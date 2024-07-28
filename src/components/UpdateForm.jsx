@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import BookmarkButton from "./BookmarkButton";
-import DeleteButton from "./DeleteButton";
-import XButton from "./XButton";
+import BookmarkButton from "./ui/BookmarkButton";
+import DeleteButton from "./ui/DeleteButton";
+import XButton from "./ui/XButton";
 
 function formatDateString(dateString) {
   if (!dateString) return "";

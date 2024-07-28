@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import ExpandCollapseButton from "./ExpandCollapseButton";
-import SideBarFilterButton from "./SideBarFilterButton";
+import ExpandCollapseButton from "./ui/ExpandCollapseButton";
+import SideBarFilterButton from "./ui/SideBarFilterButton";
 import InboxIcon from "@mui/icons-material/Inbox";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import ChecklistRtlRoundedIcon from "@mui/icons-material/ChecklistRtlRounded";
@@ -8,7 +8,7 @@ import CalendarMonthSharpIcon from "@mui/icons-material/CalendarMonthSharp";
 import WorkRoundedIcon from "@mui/icons-material/WorkRounded";
 import { Check } from "@mui/icons-material";
 
-function SideBar() {
+function Sidebar() {
   const [expanded, setExpanded] = useState(true);
 
   const toggleSidebar = () => {
@@ -88,4 +88,4 @@ function SideBar() {
     </div>
   );
 }
-export default SideBar;
+export default Sidebar;

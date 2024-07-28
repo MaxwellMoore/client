@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import BookmarkButton from "./BookmarkButton";
-import DeleteButton from "./DeleteButton";
-import XButton from "./XButton";
+import BookmarkButton from "./ui/BookmarkButton";
+import XButton from "./ui/XButton";
 
 function CreateForm({ onSubmit, onClose }) {
   const [item, setItem] = useState({

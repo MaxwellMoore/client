@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import XButton from "./XButton";
+import XButton from "./ui/XButton";
 
 const Profile = ({ onSubmit, onClose }) => {
   const [profile, setProfile] = useState({

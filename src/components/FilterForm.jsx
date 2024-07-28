@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import XButton from "./XButton";
+import XButton from "./ui/XButton";
 
 const FilterForm = ({ onSubmit, onClose }) => {
   const currentDate = new Date().toISOString().split("T")[0];

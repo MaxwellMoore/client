@@ -1,6 +1,6 @@
 import React from "react";
 import Topbar from "./Topbar";
-import SideBar from "./Sidebar";
+import Sidebar from "./Sidebar";
 import Dashboard from "./Dashboard";
 
 function Content() {
@@ -10,7 +10,7 @@ function Content() {
         <Topbar />
       </div>
       <div className="flex flex-row w-full h-full">
-        <SideBar />
+        <Sidebar />
         <Dashboard />
       </div>
     </div>

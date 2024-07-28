@@ -1,8 +1,8 @@
 import React, { useState } from "react";
+import ProfileButton from "./ui/ProfileButton";
+import NotificationsButton from "./ui/NotificationsButton";
+import OptionsButton from "./ui/OptionsButton";
 import SearchBar from "./SearchBar";
-import ProfileButton from "./ProfileButton";
-import NotificationsButton from "./NotificationsButton";
-import OptionsButton from "./OptionsButton";
 import Profile from "./Profile";
 
 function Topbar() {

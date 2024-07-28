@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import XButton from "./XButton";
+import XButton from "./ui/XButton";
 
 const SortForm = ({ onSubmit, onClose }) => {
   const [sort, setSort] = useState({

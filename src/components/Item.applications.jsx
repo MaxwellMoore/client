@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { formatDate } from "../../../../utils/formatDate";
-import CheckboxButton from "./CheckboxButton";
-import BookmarkButton from "./BookmarkButton";
-import OptionsButton from "./OptionsButton";
+import { formatDate } from "../../utils/formatDate";
+import CheckboxButton from "./ui/CheckboxButton";
+import BookmarkButton from "./ui/BookmarkButton";
+import OptionsButton from "./ui/OptionsButton";
 import ItemOptionsMenu from "./ItemsOptionsMenu";
 import UpdateForm from "./UpdateForm";
 
