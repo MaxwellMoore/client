@@ -8,10 +8,25 @@ import CreateForm from "./CreateForm";
 import FilterForm from "./FilterForm";
 import SortForm from "./SortForm";
 
+// async function getData() {
+//   const res = await fetch("");
+//   // The return value is *not* serialized
+//   // You can return Date, Map, Set, etc.
+
+//   if (!res.ok) {
+//     // This will activate the closest `error.js` Error Boundary
+//     throw new Error("Failed to fetch data");
+//   }
+
+//   return res.json();
+// }
+
 function Dashboard() {
   const [composeFormVis, setComposeFormVis] = useState(false);
   const [filterFormVis, setFilterFormVis] = useState(false);
   const [sortFormVis, setSortFormVis] = useState(false);
+
+  // const data = await getData()
 
   const handleRefreshClick = () => {
     // TODO: Implement functionality
