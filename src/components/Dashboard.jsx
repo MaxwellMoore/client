@@ -9,26 +9,61 @@ import FilterForm from "./FilterForm";
 import SortForm from "./SortForm";
 
 function Dashboard() {
+  const [isLoading, setIsLoading] = useState(false);
   const [applications, setApplications] = useState([]);
   const [composeFormVis, setComposeFormVis] = useState(false);
   const [filterFormVis, setFilterFormVis] = useState(false);
   const [sortFormVis, setSortFormVis] = useState(false);
 
+  const getApps = async () => {
+    setIsLoading(true);
+
+    try {
+      const response = await fetch(
+        `http://localhost:3001/api/products?_=${new Date().getTime()}`,
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "content-type": "application/json",
+          },
+        }
+      );
+      const apps = await response.json();
+      setApplications(apps);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const addApp = async (item) => {
+    try {
+      const response = await fetch("http://localhost:3001/api/products", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ ...item }),
+      });
+      const newApp = await response.json();
+      setApplications((prevApps) => [...prevApps, newApp]);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const editApp = async () => {};
+  const deleteApp = async () => {};
+
   useEffect(() => {
-    fetch("http://localhost:3001/api/products", {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((response) => response.json())
-      .then((data) => setApplications(data));
+    getApps();
   }, []);
 
-  useEffect(() => {
-    console.log({ applications });
-  }, [applications]);
-
-  const handleRefreshClick = () => {
-    // TODO: Implement functionality
+  const handleRefreshClick = async () => {
+    await getApps();
   };
   const handleOptionsClick = () => {
     // TODO: Implement functionality
@@ -36,7 +71,10 @@ function Dashboard() {
   const toggleCompose = () => {
     setComposeFormVis(!composeFormVis);
   };
-  const handleComposeSubmit = (item) => {
+  const handleComposeSubmit = async (item) => {
+    await addApp(item);
+    await getApps();
+
     console.log(item);
     toggleCompose();
   };
@@ -73,9 +111,13 @@ function Dashboard() {
           <OptionsButton onClick={handleOptionsClick} />
         </div>
       </div>
-      <div className="flex-1 overflow-y-auto">
-        <ListContainer items={applications} />
-      </div>
+      {isLoading && <div className="flex-1">Loading...</div>}
+      {!isLoading && (
+        <div className="flex-1 overflow-y-auto">
+          <ListContainer items={applications} />
+        </div>
+      )}
+
       {composeFormVis && (
         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <CreateForm onSubmit={handleComposeSubmit} onClose={toggleCompose} />

@@ -10,6 +10,25 @@ const ApplicationItem = ({ item }) => {
   const [optionsVis, setOptionsVis] = useState(false);
   const [updateFormVis, setUpdateFormVis] = useState(false);
 
+  const deleteApp = async (item) => {
+    const productId = item.product_id;
+
+    try {
+      const response = await fetch(
+        `http://localhost:3001/api/products/${productId}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+          headers: {
+            "content-type": "application/json",
+          },
+        }
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const getStatusStyles = (status) => {
     switch (status) {
       case "underReview":
@@ -38,7 +57,8 @@ const ApplicationItem = ({ item }) => {
     console.log(item);
     toggleUpdate();
   };
-  const handleDelete = () => {
+  const handleDelete = async () => {
+    await deleteApp(item);
     console.log("Delete clicked");
     toggleOptions();
   };

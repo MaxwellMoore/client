@@ -4,8 +4,6 @@ import XButton from "./ui/XButton";
 
 function CreateForm({ onSubmit, onClose }) {
   const [item, setItem] = useState({
-    selected: false,
-    bookmarked: false,
     status: "",
     company: "",
     title: "",
