@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import RefreshButton from "./ui/RefreshButton";
 import OptionsButton from "./ui/OptionsButton";
 import FilterButton from "./ui/FilterButton";
@@ -8,25 +8,24 @@ import CreateForm from "./CreateForm";
 import FilterForm from "./FilterForm";
 import SortForm from "./SortForm";
 
-// async function getData() {
-//   const res = await fetch("");
-//   // The return value is *not* serialized
-//   // You can return Date, Map, Set, etc.
-
-//   if (!res.ok) {
-//     // This will activate the closest `error.js` Error Boundary
-//     throw new Error("Failed to fetch data");
-//   }
-
-//   return res.json();
-// }
-
 function Dashboard() {
+  const [applications, setApplications] = useState([]);
   const [composeFormVis, setComposeFormVis] = useState(false);
   const [filterFormVis, setFilterFormVis] = useState(false);
   const [sortFormVis, setSortFormVis] = useState(false);
 
-  // const data = await getData()
+  useEffect(() => {
+    fetch("http://localhost:3001/api/products", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((data) => setApplications(data));
+  }, []);
+
+  useEffect(() => {
+    console.log({ applications });
+  }, [applications]);
 
   const handleRefreshClick = () => {
     // TODO: Implement functionality
@@ -75,7 +74,7 @@ function Dashboard() {
         </div>
       </div>
       <div className="flex-1 overflow-y-auto">
-        <ListContainer />
+        <ListContainer items={applications} />
       </div>
       {composeFormVis && (
         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">

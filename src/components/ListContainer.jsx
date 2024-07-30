@@ -1,7 +1,7 @@
 import React from "react";
 import List from "./List.applications";
 
-function ListContainer() {
+function ListContainer({ items }) {
   const listItems = [
     {
       id: 1,
@@ -157,7 +157,7 @@ function ListContainer() {
 
   return (
     <div className="flex flex-col w-full h-full bg-orange-500">
-      <List items={listItems} />
+      <List items={items} />
     </div>
   );
 }

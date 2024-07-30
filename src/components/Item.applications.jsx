@@ -74,8 +74,8 @@ const ApplicationItem = ({ item }) => {
       <div className="flex-1 flex justify-end">
         <div className="flex flex-row">
           <div className="flex flex-col items-end text-sm text-gray-500">
-            <div>Updated: {formatDate(item.updatedAt)}</div>
-            <div>Created: {formatDate(item.createdAt)}</div>
+            <div>Updated: {item.updatedAt}</div>
+            <div>Created: {item.createdAt}</div>
           </div>
           <div className="ml-2.5 relative">
             <OptionsButton onClick={toggleOptions} />

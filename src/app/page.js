@@ -5,7 +5,6 @@ import Content from "../components/TestLayout";
 export default function Home() {
   return <Content />;
 }
-// const { data } = useSWR(
 //   `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/me`,
 //   fetcher
 // );

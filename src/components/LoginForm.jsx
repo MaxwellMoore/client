@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import getGoogleOAuthUrl from "../../utils/getGoogleUrl";
 
 function LoginForm({ onSubmit }) {
   const [form, setForm] = useState({
@@ -77,6 +78,15 @@ function LoginForm({ onSubmit }) {
           >
             Login
           </button>
+          <span className="flex justify-center items-center mt-2 text-sm text-gray-700">
+            or
+          </span>
+          <a
+            href={getGoogleOAuthUrl()}
+            className="flex justify-center items-center w-full p-2 mt-2 rounded-md text-white bg-red-500 hover:bg-red-600"
+          >
+            Login with Google
+          </a>
         </div>
       </form>
     </div>

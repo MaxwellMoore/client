@@ -5,7 +5,7 @@ const List = ({ items }) => {
   return (
     <div className="w-full overflow-y-auto">
       {items.map((item) => (
-        <ApplicationItem key={item.id} item={item} />
+        <ApplicationItem key={item.product_id} item={item} />
       ))}
     </div>
   );
