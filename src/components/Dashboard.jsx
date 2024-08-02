@@ -3,10 +3,10 @@ import RefreshButton from "./ui/RefreshButton";
 import OptionsButton from "./ui/OptionsButton";
 import FilterButton from "./ui/FilterButton";
 import SortButton from "./ui/SortButton";
-import ListContainer from "./ListContainer";
 import CreateForm from "./CreateForm";
 import FilterForm from "./FilterForm";
 import SortForm from "./SortForm";
+import List from "./List.applications";
 
 function Dashboard() {
   const [isLoading, setIsLoading] = useState(false);
@@ -55,8 +55,6 @@ function Dashboard() {
       setIsLoading(false);
     }
   };
-  const editApp = async () => {};
-  const deleteApp = async () => {};
 
   useEffect(() => {
     getApps();
@@ -74,8 +72,6 @@ function Dashboard() {
   const handleComposeSubmit = async (item) => {
     await addApp(item);
     await getApps();
-
-    console.log(item);
     toggleCompose();
   };
   const toggleFilter = () => {
@@ -114,7 +110,9 @@ function Dashboard() {
       {isLoading && <div className="flex-1">Loading...</div>}
       {!isLoading && (
         <div className="flex-1 overflow-y-auto">
-          <ListContainer items={applications} />
+          <div className="flex flex-col w-full h-full bg-grey-50">
+            <List items={applications} />
+          </div>
         </div>
       )}
 
