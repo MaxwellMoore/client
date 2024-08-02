@@ -10,12 +10,32 @@ const ApplicationItem = ({ item }) => {
   const [optionsVis, setOptionsVis] = useState(false);
   const [updateFormVis, setUpdateFormVis] = useState(false);
 
-  const deleteApp = async (item) => {
-    const productId = item.product_id;
+  const updateApp = async (item) => {
+    const { product_id, user_id, ...data } = item;
 
     try {
       const response = await fetch(
-        `http://localhost:3001/api/products/${productId}`,
+        `http://localhost:3001/api/products/${product_id}`,
+        {
+          method: "PUT",
+          credentials: "include",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({ ...data }),
+        }
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const deleteApp = async () => {
+    const { product_id } = item;
+
+    try {
+      const response = await fetch(
+        `http://localhost:3001/api/products/${product_id}`,
         {
           method: "DELETE",
           credentials: "include",
@@ -53,12 +73,12 @@ const ApplicationItem = ({ item }) => {
       setOptionsVis(false);
     }
   };
-  const handleUpdateClick = (item) => {
-    console.log(item);
+  const handleUpdate = async (item) => {
+    await updateApp(item);
     toggleUpdate();
   };
   const handleDelete = async () => {
-    await deleteApp(item);
+    await deleteApp();
     console.log("Delete clicked");
     toggleOptions();
   };
@@ -112,7 +132,7 @@ const ApplicationItem = ({ item }) => {
             <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
               <UpdateForm
                 data={item}
-                onSubmit={handleUpdateClick}
+                onSubmit={handleUpdate}
                 onClose={toggleUpdate}
               />
             </div>
