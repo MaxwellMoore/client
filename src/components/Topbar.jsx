@@ -22,7 +22,7 @@ function Topbar() {
   };
 
   return (
-    <div className="flex items-center w-full h-16 bg-blue-500">
+    <div className="flex flex-row items-center w-full h-14 bg-blue-500">
       <div className="flex flex-grow justify-center">
         <SearchBar onSearch={handleSearchSubmit} />
       </div>

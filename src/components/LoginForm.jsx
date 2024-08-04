@@ -1,32 +1,40 @@
 import React, { useState } from "react";
 import getGoogleOAuthUrl from "../../utils/getGoogleUrl";
 
-function LoginForm({ onSubmit }) {
-  const [form, setForm] = useState({
+function LoginForm() {
+  const [userData, setUserData] = useState({
     email: "",
     password: "",
   });
-  const [error, setError] = useState("");
+
+  const getUser = async (data) => {
+    try {
+      const response = await fetch("http://localhost:3001/api/login", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ ...data }),
+      });
+      const jsonResponse = await response.json();
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   // Handle Input Change
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({
+    setUserData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
   // Handle Form Submit
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Example validation
-    if (!form.email || !form.password) {
-      setError("Email and Password are required");
-      return;
-    }
-    setError("");
-    onSubmit(form);
+    await getUser(userData);
   };
 
   return (
@@ -39,8 +47,6 @@ function LoginForm({ onSubmit }) {
           Login
         </div>
 
-        {error && <div className="mb-4 text-red-500">{error}</div>}
-
         <div className="mb-4">
           <label htmlFor="email" className="block text-sm text-gray-700">
             Email
@@ -49,7 +55,7 @@ function LoginForm({ onSubmit }) {
             type="email"
             id="email"
             name="email"
-            value={form.email}
+            value={userData.email}
             onChange={handleInputChange}
             className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
             placeholder="you@example.com"
@@ -64,7 +70,7 @@ function LoginForm({ onSubmit }) {
             type="password"
             id="password"
             name="password"
-            value={form.password}
+            value={userData.password}
             onChange={handleInputChange}
             className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
             placeholder="********"

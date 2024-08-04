@@ -91,7 +91,7 @@ const ApplicationItem = ({ item }) => {
   };
 
   return (
-    <div className="flex flex-row items-center p-2.5 border-b border-b-gray-500 bg-gray-50">
+    <div className="flex flex-row items-center h-fit p-2.5 border-b border-b-gray-500 bg-gray-50">
       <div className="flex items-center">
         <CheckboxButton checked={item.selected} onToggle={toggleSelected} />
         <BookmarkButton

@@ -90,7 +90,7 @@ function Dashboard() {
   };
 
   return (
-    <div className="flex flex-col w-full h-full">
+    <div className="w-full h-full">
       <div className="flex flex-row justify-between items-center w-full h-14 px-2.5 bg-gray-200 border-b border-gray-400">
         <div>
           <RefreshButton onClick={handleRefreshClick} />
@@ -107,12 +107,11 @@ function Dashboard() {
           <OptionsButton onClick={handleOptionsClick} />
         </div>
       </div>
-      {isLoading && <div className="flex-1">Loading...</div>}
-      {!isLoading && (
+      {isLoading ? (
+        <div className="flex-1">Loading...</div>
+      ) : (
         <div className="flex-1 overflow-y-auto">
-          <div className="flex flex-col w-full h-full bg-grey-50">
-            <List items={applications} />
-          </div>
+          <List items={applications} />
         </div>
       )}
 

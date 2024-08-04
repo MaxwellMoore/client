@@ -1,33 +1,41 @@
 import React, { useState } from "react";
 
-function RegisterForm({ onSubmit }) {
-  const [form, setForm] = useState({
+function RegisterForm() {
+  const [userData, setUserData] = useState({
     email: "",
     username: "",
     password: "",
-    passwordConfirm: "",
+    passwordConfirmation: "",
   });
-  const [error, setError] = useState("");
+
+  const addUser = async (data) => {
+    try {
+      const response = await fetch("http://localhost:3001/api/register", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ ...data }),
+      });
+      const jsonResponse = await response.json();
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   // Handle Input Change
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({
+    setUserData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
   // Handle Form Submit
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Example validation
-    if (!form.email || !form.password) {
-      setError("Email and Password are required");
-      return;
-    }
-    setError("");
-    onSubmit(form);
+    await addUser(userData);
   };
 
   return (
@@ -40,8 +48,6 @@ function RegisterForm({ onSubmit }) {
           Register
         </div>
 
-        {error && <div className="mb-4 text-red-500">{error}</div>}
-
         <div className="mb-4">
           <label htmlFor="email" className="block text-sm text-gray-700">
             Email
@@ -50,7 +56,7 @@ function RegisterForm({ onSubmit }) {
             type="email"
             id="email"
             name="email"
-            value={form.email}
+            value={userData.email}
             onChange={handleInputChange}
             className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
             placeholder="you@example.com"
@@ -65,7 +71,7 @@ function RegisterForm({ onSubmit }) {
             type="username"
             id="username"
             name="username"
-            value={form.username}
+            value={userData.username}
             onChange={handleInputChange}
             className=" w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
             placeholder="johndoe123"
@@ -80,7 +86,7 @@ function RegisterForm({ onSubmit }) {
             type="password"
             id="password"
             name="password"
-            value={form.password}
+            value={userData.password}
             onChange={handleInputChange}
             className=" w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
             placeholder="********"
@@ -89,16 +95,16 @@ function RegisterForm({ onSubmit }) {
 
         <div className="mb-4">
           <label
-            htmlFor="passwordConfirm"
+            htmlFor="passwordConfirmation"
             className="block text-sm text-gray-700"
           >
             Password Confirmation
           </label>
           <input
             type="password"
-            id="passwordConfirm"
-            name="passwordConfirm"
-            value={form.passwordConfirm}
+            id="passwordConfirmation"
+            name="passwordConfirmation"
+            value={userData.passwordConfirmation}
             onChange={handleInputChange}
             className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
             placeholder="********"
@@ -110,7 +116,7 @@ function RegisterForm({ onSubmit }) {
             type="submit"
             className="w-full px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            Login
+            Register
           </button>
         </div>
       </form>
