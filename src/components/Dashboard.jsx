@@ -109,6 +109,7 @@ function Dashboard() {
   }, []);
 
   const handleRefreshClick = async () => {
+    setFilterState();
     await getApps();
   };
   const handleOptionsClick = () => {
@@ -139,7 +140,7 @@ function Dashboard() {
   };
 
   return (
-    <div className="w-full h-full">
+    <div className="flex flex-col flex-grow w-full overflow-auto">
       <div className="flex flex-row justify-between items-center w-full h-14 px-2.5 bg-gray-200 border-b border-gray-400">
         <div>
           <RefreshButton onClick={handleRefreshClick} />

@@ -5,7 +5,7 @@ import XButton from "./ui/XButton";
 const SortForm = ({ onSubmit, onClose }) => {
   const [sort, setSort] = useState({
     sortBy: "updatedAt",
-    sortOrder: "asc",
+    sortOrder: "desc",
   });
 
   const handleCriteriaClick = (criteria) => {
