@@ -1,11 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import getGoogleOAuthUrl from "../../utils/getGoogleUrl";
 
 function LoginForm() {
+  const [errors, setErrors] = useState({});
   const [userData, setUserData] = useState({
     email: "",
     password: "",
   });
+
+  const validate = () => {
+    const newErrors = {};
+    if (!userData.email) newErrors.email = "Email is required";
+    if (!userData.password) newErrors.password = "Password is required";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const getUser = async (data) => {
     try {
@@ -17,6 +26,7 @@ function LoginForm() {
         body: JSON.stringify({ ...data }),
       });
       const jsonResponse = await response.json();
+      return response;
     } catch (e) {
       console.log(e);
     }
@@ -34,7 +44,12 @@ function LoginForm() {
   // Handle Form Submit
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await getUser(userData);
+    if (validate()) {
+      const response = await getUser(userData);
+      //TODO: Display any errors that may be returned as a response from the server:
+      //Example: Not a valid email
+      window.location.href = "/";
+    }
   };
 
   return (
@@ -57,12 +72,17 @@ function LoginForm() {
             name="email"
             value={userData.email}
             onChange={handleInputChange}
-            className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+            className="w-full mt-1 p-2 text-sm text-gray-700 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
             placeholder="you@example.com"
           />
+          {errors.email && (
+            <div className="flex flex-grow justify-center mt-2 bg-red-100 rounded">
+              <p className="p-2 text-base text-red-500">{errors.email}</p>
+            </div>
+          )}
         </div>
 
-        <div className="mb-4">
+        <div className="mb-8">
           <label htmlFor="password" className="block text-sm text-gray-700">
             Password
           </label>
@@ -72,9 +92,14 @@ function LoginForm() {
             name="password"
             value={userData.password}
             onChange={handleInputChange}
-            className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+            className="w-full mt-1 p-2 text-sm text-gray-700 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
             placeholder="********"
           />
+          {errors.password && (
+            <div className="flex flex-grow justify-center mt-2 bg-red-100 rounded">
+              <p className="p-2 text-base text-red-500">{errors.password}</p>
+            </div>
+          )}
         </div>
 
         <div className="w-full">
@@ -100,100 +125,3 @@ function LoginForm() {
 }
 
 export default LoginForm;
-
-//? Me network call
-// // pages/api/me.js
-// import fetcher from "../../utils/fetcher";
-
-// export default async function handler(req, res) {
-//   try {
-//     const data = await fetcher(
-//       `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/me`,
-//       req.headers
-//     );
-//     res.status(200).json(data);
-//   } catch (error) {
-//     res.status(500).json({ error: "Failed to fetch data" });
-//   }
-// }
-
-//? Previous Form
-// import { useState } from "react";
-// import { useRouter } from "next/router";
-// import axios from "axios";
-// import { useForm } from "react-hook-form";
-// import { joiResolver } from "@hookform/resolvers/joi";
-// import Joi from "joi";
-// import getGoogleOAuthUrl from "../../../utils/getGoogleUrl";
-
-// const createSessionSchema = Joi.object({
-//   email: Joi.string()
-//     .email({ tlds: { allow: false } })
-//     .required()
-//     .messages({
-//       "string.email": "Not a valid email",
-//       "any.required": "Email is required",
-//     }),
-//   password: Joi.string().min(6).required().messages({
-//     "string.min": "Password must be more than 5 chars",
-//     "any.required": "Password is required",
-//   }),
-// });
-
-// function LoginPage() {
-//   const router = useRouter();
-//   const { loginError, setLoginError } = useState(null);
-//   const {
-//     register,
-//     formState: { errors },
-//     handleSubmit,
-//   } = useForm({
-//     resolver: joiResolver(createSessionSchema),
-//   });
-
-//   async function onSubmit(payload) {
-//     try {
-//       await axios.post(
-//         `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/sessions`,
-//         payload,
-//         { withCredentials: true }
-//       );
-//       router.push("/");
-//     } catch (error) {
-//       setLoginError(error.message);
-//     }
-//   }
-//   <div className="bg-red-500">
-//     <p>{loginError}</p>
-//     <form onSubmit={handleSubmit(onSubmit)} className="bg-red-500">
-//       <div className="form-element">
-//         <label htmlFor="email">Email</label>
-//         <input
-//           id="email"
-//           type="email"
-//           placeholder="jane.doe@example.com"
-//           {...register("email")}
-//         />
-//         <p>{errors.email?.message}</p>
-//       </div>
-
-//       <div className="form-element">
-//         <label htmlFor="password">Password</label>
-//         <input
-//           id="password"
-//           type="password"
-//           placeholder="password"
-//           {...register("password")}
-//         />
-//         <p>{errors.password?.message}</p>
-//       </div>
-
-//       <a href={getGoogleOAuthUrl()}>Login with Google</a>
-
-//       <button type="submit">SUBMIT</button>
-//     </form>
-//   </div>;
-//   return <div className="bg-red-500">hello</div>;
-// }
-
-// export default LoginPage;

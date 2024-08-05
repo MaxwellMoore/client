@@ -37,6 +37,30 @@ function Dashboard() {
       setIsLoading(false);
     }
   };
+  const getFilteredApps = async (filter) => {
+    setIsLoading(true);
+    console.log(filter);
+
+    try {
+      const response = await fetch(
+        `http://localhost:3001/api/filter/products?_=${new Date().getTime()}`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({ ...filter }),
+        }
+      );
+      const filteredApps = await response.json();
+      // setApplications(filteredApps);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   const addApp = async (item) => {
     try {
       const response = await fetch("http://localhost:3001/api/products", {
@@ -77,8 +101,8 @@ function Dashboard() {
   const toggleFilter = () => {
     setFilterFormVis(!filterFormVis);
   };
-  const handleFilterSubmit = () => {
-    console.log("Filter Submit");
+  const handleFilterSubmit = async (filter) => {
+    await getFilteredApps(filter);
     toggleFilter();
   };
   const toggleSort = () => {

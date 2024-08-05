@@ -1,12 +1,24 @@
 import React, { useState } from "react";
 
 function RegisterForm() {
+  const [errors, setErrors] = useState({});
   const [userData, setUserData] = useState({
     email: "",
     username: "",
     password: "",
     passwordConfirmation: "",
   });
+
+  const validate = () => {
+    const newErrors = {};
+    if (!userData.email) newErrors.email = "Email is required";
+    if (!userData.username) newErrors.username = "Username is required";
+    if (!userData.password) newErrors.password = "Password is required";
+    if (!userData.passwordConfirmation)
+      newErrors.passwordConfirmation = "Please confirm password";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const addUser = async (data) => {
     try {
@@ -18,6 +30,7 @@ function RegisterForm() {
         body: JSON.stringify({ ...data }),
       });
       const jsonResponse = await response.json();
+      return jsonResponse;
     } catch (e) {
       console.log(e);
     }
@@ -35,7 +48,12 @@ function RegisterForm() {
   // Handle Form Submit
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await addUser(userData);
+    if (validate()) {
+      const response = await addUser(userData);
+      //TODO: Display any errors that may be returned as a response from the server:
+      //Example: Not a valid email
+      window.location.href = "/";
+    }
   };
 
   return (
@@ -61,6 +79,11 @@ function RegisterForm() {
             className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
             placeholder="you@example.com"
           />
+          {errors.email && (
+            <div className="flex flex-grow justify-center mt-2 bg-red-100 rounded">
+              <p className="p-2 text-base text-red-500">{errors.email}</p>
+            </div>
+          )}
         </div>
 
         <div className="mb-4">
@@ -76,6 +99,11 @@ function RegisterForm() {
             className=" w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
             placeholder="johndoe123"
           />
+          {errors.username && (
+            <div className="flex flex-grow justify-center mt-2 bg-red-100 rounded">
+              <p className="p-2 text-base text-red-500">{errors.username}</p>
+            </div>
+          )}
         </div>
 
         <div className="mb-4">
@@ -91,6 +119,11 @@ function RegisterForm() {
             className=" w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
             placeholder="********"
           />
+          {errors.password && (
+            <div className="flex flex-grow justify-center mt-2 bg-red-100 rounded">
+              <p className="p-2 text-base text-red-500">{errors.password}</p>
+            </div>
+          )}
         </div>
 
         <div className="mb-4">
@@ -109,6 +142,13 @@ function RegisterForm() {
             className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
             placeholder="********"
           />
+          {errors.passwordConfirmation && (
+            <div className="flex flex-grow justify-center mt-2 bg-red-100 rounded">
+              <p className="p-2 text-base text-red-500">
+                {errors.passwordConfirmation}
+              </p>
+            </div>
+          )}
         </div>
 
         <div className="w-full">

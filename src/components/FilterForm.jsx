@@ -41,8 +41,7 @@ const FilterForm = ({ onSubmit, onClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(filter);
-    onSubmit();
+    onSubmit(filter);
     // Handle the filter logic here
   };
 
