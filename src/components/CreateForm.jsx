@@ -3,6 +3,7 @@ import BookmarkButton from "./ui/BookmarkButton";
 import XButton from "./ui/XButton";
 
 function CreateForm({ onSubmit, onClose }) {
+  const [errors, setErrors] = useState({});
   const [item, setItem] = useState({
     status: "",
     company: "",
@@ -10,6 +11,17 @@ function CreateForm({ onSubmit, onClose }) {
     updatedAt: "",
     createdAt: "",
   });
+
+  const validate = () => {
+    const newErrors = {};
+    if (!item.status) newErrors.status = "Status is required";
+    if (!item.company) newErrors.company = "Company is required";
+    if (!item.title) newErrors.title = "Title is required";
+    setErrors(newErrors);
+    if (!item.updatedAt) newErrors.updatedAt = "UpdatedAt is required";
+    if (!item.createdAt) newErrors.createdAt = "CreatedAt is required";
+    return Object.keys(newErrors).length === 0;
+  };
 
   // Handle Input
   const handleInputChange = (e) => {
@@ -23,7 +35,9 @@ function CreateForm({ onSubmit, onClose }) {
   // Handle Submit
   const handleSubmit = (event) => {
     event.preventDefault();
-    onSubmit(item);
+    if (validate()) {
+      onSubmit(item);
+    }
   };
 
   // Handle Status Change
@@ -70,6 +84,11 @@ function CreateForm({ onSubmit, onClose }) {
               onChange={handleInputChange}
               className="mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring"
             />
+            {errors.company && (
+              <div className="flex flex-grow justify-center mt-2 bg-red-100 rounded">
+                <p className="p-2 text-base text-red-500">{errors.company}</p>
+              </div>
+            )}
           </div>
           <div className="flex flex-col">
             <label htmlFor="title" className="text-sm text-gray-700">
@@ -83,6 +102,11 @@ function CreateForm({ onSubmit, onClose }) {
               onChange={handleInputChange}
               className="mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring"
             />
+            {errors.title && (
+              <div className="flex flex-grow justify-center mt-2 bg-red-100 rounded">
+                <p className="p-2 text-base text-red-500">{errors.title}</p>
+              </div>
+            )}
           </div>
         </div>
 
@@ -102,6 +126,11 @@ function CreateForm({ onSubmit, onClose }) {
               )
             )}
           </div>
+          {errors.status && (
+            <div className="flex flex-grow justify-center mt-2 bg-red-100 rounded">
+              <p className="p-2 text-base text-red-500">{errors.status}</p>
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-2 gap-4 mb-4">
@@ -117,6 +146,11 @@ function CreateForm({ onSubmit, onClose }) {
               onChange={handleInputChange}
               className="mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring"
             />
+            {errors.createdAt && (
+              <div className="flex flex-grow justify-center mt-2 bg-red-100 rounded">
+                <p className="p-2 text-base text-red-500">{errors.createdAt}</p>
+              </div>
+            )}
           </div>
           <div className="flex flex-col">
             <label htmlFor="updatedAt" className="text-sm text-gray-700">
@@ -130,6 +164,11 @@ function CreateForm({ onSubmit, onClose }) {
               onChange={handleInputChange}
               className="mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring"
             />
+            {errors.updatedAt && (
+              <div className="flex flex-grow justify-center mt-2 bg-red-100 rounded">
+                <p className="p-2 text-base text-red-500">{errors.updatedAt}</p>
+              </div>
+            )}
           </div>
         </div>
 

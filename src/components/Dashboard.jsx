@@ -1,4 +1,10 @@
 import React, { useEffect, useState } from "react";
+import {
+  getApps,
+  getFilteredApps,
+  getSortedApps,
+  addApp,
+} from "../services/api/api";
 import RefreshButton from "./ui/RefreshButton";
 import OptionsButton from "./ui/OptionsButton";
 import FilterButton from "./ui/FilterButton";
@@ -16,101 +22,13 @@ function Dashboard() {
   const [filterFormVis, setFilterFormVis] = useState(false);
   const [sortFormVis, setSortFormVis] = useState(false);
 
-  const getApps = async () => {
-    setIsLoading(true);
-
-    try {
-      const response = await fetch(
-        `http://localhost:3001/api/products?_=${new Date().getTime()}`,
-        {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            "content-type": "application/json",
-          },
-        }
-      );
-      const apps = await response.json();
-      setApplications(apps);
-    } catch (e) {
-      console.log(e);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  const getFilteredApps = async (filter) => {
-    setIsLoading(true);
-
-    try {
-      const response = await fetch(
-        `http://localhost:3001/api/filter/products?_=${new Date().getTime()}`,
-        {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify({ ...filter }),
-        }
-      );
-      const filteredApps = await response.json();
-      setApplications(filteredApps);
-    } catch (e) {
-      console.log(e);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const getSortedApps = async (filter, sort) => {
-    setIsLoading(true);
-
-    try {
-      const response = await fetch(
-        `http://localhost:3001/api/filter/products?_=${new Date().getTime()}`,
-        {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify({ ...filter, ...sort }),
-        }
-      );
-      const filteredApps = await response.json();
-      setApplications(filteredApps);
-    } catch (e) {
-      console.log(e);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  const addApp = async (item) => {
-    try {
-      const response = await fetch("http://localhost:3001/api/products", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({ ...item }),
-      });
-      const newApp = await response.json();
-      setApplications((prevApps) => [...prevApps, newApp]);
-    } catch (e) {
-      console.log(e);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
-    getApps();
+    getApps(setIsLoading, setApplications);
   }, []);
 
   const handleRefreshClick = async () => {
     setFilterState();
-    await getApps();
+    await getApps(setIsLoading, setApplications);
   };
   const handleOptionsClick = () => {
     // TODO: Implement functionality
@@ -119,8 +37,8 @@ function Dashboard() {
     setComposeFormVis(!composeFormVis);
   };
   const handleComposeSubmit = async (item) => {
-    await addApp(item);
-    await getApps();
+    await addApp(item, setIsLoading, setApplications);
+    await getApps(setIsLoading, setApplications);
     toggleCompose();
   };
   const toggleFilter = () => {
@@ -128,14 +46,14 @@ function Dashboard() {
   };
   const handleFilterSubmit = async (filter) => {
     setFilterState(filter);
-    await getFilteredApps(filter);
+    await getFilteredApps(filter, setIsLoading, setApplications);
     toggleFilter();
   };
   const toggleSort = () => {
     setSortFormVis(!sortFormVis);
   };
   const handleSortSubmit = async (sort) => {
-    await getSortedApps(filterState, sort);
+    await getSortedApps(filterState, sort, setIsLoading, setApplications);
     toggleSort();
   };
 
@@ -161,7 +79,12 @@ function Dashboard() {
         <div className="flex-1">Loading...</div>
       ) : (
         <div className="flex-1 overflow-y-auto">
-          <List items={applications} getApps={getApps} />
+          <List
+            items={applications}
+            getApps={getApps}
+            setIsLoading={setIsLoading}
+            setApplications={setApplications}
+          />
         </div>
       )}
 

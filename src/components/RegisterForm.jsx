@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { addUser } from "../services/api/api";
 
 function RegisterForm() {
   const [errors, setErrors] = useState({});
@@ -18,22 +19,6 @@ function RegisterForm() {
       newErrors.passwordConfirmation = "Please confirm password";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };
-
-  const addUser = async (data) => {
-    try {
-      const response = await fetch("http://localhost:3001/api/register", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({ ...data }),
-      });
-      const jsonResponse = await response.json();
-      return jsonResponse;
-    } catch (e) {
-      console.log(e);
-    }
   };
 
   // Handle Input Change

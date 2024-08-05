@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { getUser } from "../services/api/api";
 import getGoogleOAuthUrl from "../../utils/getGoogleUrl";
 
 function LoginForm() {
@@ -14,22 +15,6 @@ function LoginForm() {
     if (!userData.password) newErrors.password = "Password is required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };
-
-  const getUser = async (data) => {
-    try {
-      const response = await fetch("http://localhost:3001/api/login", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({ ...data }),
-      });
-      const jsonResponse = await response.json();
-      return response;
-    } catch (e) {
-      console.log(e);
-    }
   };
 
   // Handle Input Change

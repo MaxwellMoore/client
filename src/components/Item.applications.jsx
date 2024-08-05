@@ -1,69 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { formatDate } from "../../utils/formatDate";
+import { getStatusStyles } from "../../utils/formatStatus";
+import { updateApp, deleteApp } from "../services/api/api";
 import CheckboxButton from "./ui/CheckboxButton";
 import BookmarkButton from "./ui/BookmarkButton";
 import OptionsButton from "./ui/OptionsButton";
 import ItemOptionsMenu from "./ItemsOptionsMenu";
 import UpdateForm from "./UpdateForm";
 
-const ApplicationItem = ({ item, getApps }) => {
+const ApplicationItem = ({ item, getApps, setIsLoading, setApplications }) => {
   const [data, setData] = useState(item);
   const [optionsVis, setOptionsVis] = useState(false);
   const [updateFormVis, setUpdateFormVis] = useState(false);
-
-  const updateApp = async (data) => {
-    const { product_id, user_id, ...payload } = data;
-
-    try {
-      const response = await fetch(
-        `http://localhost:3001/api/products/${product_id}`,
-        {
-          method: "PUT",
-          credentials: "include",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify({ ...payload }),
-        }
-      );
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const deleteApp = async () => {
-    const { product_id } = data;
-
-    try {
-      const response = await fetch(
-        `http://localhost:3001/api/products/${product_id}`,
-        {
-          method: "DELETE",
-          credentials: "include",
-          headers: {
-            "content-type": "application/json",
-          },
-        }
-      );
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const getStatusStyles = (status) => {
-    switch (status) {
-      case "underReview":
-        return "bg-gray-200";
-      case "interview":
-        return "bg-gray-200";
-      case "accepted":
-        return "bg-gray-200";
-      case "rejected":
-        return "bg-gray-200";
-      default:
-        return "bg-gray-200";
-    }
-  };
 
   const toggleOptions = () => {
     setOptionsVis(!optionsVis);
@@ -76,12 +24,12 @@ const ApplicationItem = ({ item, getApps }) => {
   };
   const handleUpdate = async (data) => {
     await updateApp(data);
-    await getApps();
+    await getApps(setIsLoading, setApplications);
     toggleUpdate();
   };
   const handleDelete = async () => {
-    await deleteApp();
-    await getApps();
+    await deleteApp(data);
+    await getApps(setIsLoading, setApplications);
     toggleOptions();
   };
 
