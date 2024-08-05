@@ -4,37 +4,36 @@ import XButton from "./ui/XButton";
 
 const SortForm = ({ onSubmit, onClose }) => {
   const [sort, setSort] = useState({
-    criteria: "updatedAt",
-    order: "asc",
+    sortBy: "updatedAt",
+    sortOrder: "asc",
   });
 
   const handleCriteriaClick = (criteria) => {
     setSort((prevSort) => ({
       ...prevSort,
-      criteria,
+      sortBy: criteria,
     }));
   };
 
   const handleOrderClick = (order) => {
     setSort((prevSort) => ({
       ...prevSort,
-      order,
+      sortOrder: order,
     }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(sort);
     if (onSubmit) onSubmit(sort); // Call onSubmit prop with the sort state
   };
 
   const getOptionClass = (option) =>
-    sort.criteria === option
+    sort.sortBy === option
       ? "bg-gray-500 text-white"
       : "bg-gray-200 text-gray-700";
 
   const getOrderClass = (order) =>
-    sort.order === order
+    sort.sortOrder === order
       ? "bg-gray-500 text-white"
       : "bg-gray-200 text-gray-700";
 

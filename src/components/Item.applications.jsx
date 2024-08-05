@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { formatDate } from "../../utils/formatDate";
 import CheckboxButton from "./ui/CheckboxButton";
 import BookmarkButton from "./ui/BookmarkButton";
@@ -6,12 +6,13 @@ import OptionsButton from "./ui/OptionsButton";
 import ItemOptionsMenu from "./ItemsOptionsMenu";
 import UpdateForm from "./UpdateForm";
 
-const ApplicationItem = ({ item }) => {
+const ApplicationItem = ({ item, getApps }) => {
+  const [data, setData] = useState(item);
   const [optionsVis, setOptionsVis] = useState(false);
   const [updateFormVis, setUpdateFormVis] = useState(false);
 
-  const updateApp = async (item) => {
-    const { product_id, user_id, ...data } = item;
+  const updateApp = async (data) => {
+    const { product_id, user_id, ...payload } = data;
 
     try {
       const response = await fetch(
@@ -22,7 +23,7 @@ const ApplicationItem = ({ item }) => {
           headers: {
             "content-type": "application/json",
           },
-          body: JSON.stringify({ ...data }),
+          body: JSON.stringify({ ...payload }),
         }
       );
     } catch (e) {
@@ -31,7 +32,7 @@ const ApplicationItem = ({ item }) => {
   };
 
   const deleteApp = async () => {
-    const { product_id } = item;
+    const { product_id } = data;
 
     try {
       const response = await fetch(
@@ -73,49 +74,56 @@ const ApplicationItem = ({ item }) => {
       setOptionsVis(false);
     }
   };
-  const handleUpdate = async (item) => {
-    await updateApp(item);
+  const handleUpdate = async (data) => {
+    await updateApp(data);
+    await getApps();
     toggleUpdate();
   };
   const handleDelete = async () => {
     await deleteApp();
-    console.log("Delete clicked");
+    await getApps();
     toggleOptions();
   };
 
   const toggleSelected = () => {
     console.log("Selected clicked!");
   };
-  const toggleBookmarked = () => {
-    console.log("Bookmark clicked!");
+  const toggleBookmarked = async () => {
+    const update = data;
+    update.bookmarked = !update.bookmarked;
+    setData((prev) => ({
+      ...prev,
+      bookmarked: update.bookmarked,
+    }));
+    await updateApp(update);
   };
 
   return (
     <div className="flex flex-row items-center h-fit p-2.5 border-b border-b-gray-500 bg-gray-50">
       <div className="flex items-center">
-        <CheckboxButton checked={item.selected} onToggle={toggleSelected} />
+        <CheckboxButton checked={data.selected} onToggle={toggleSelected} />
         <BookmarkButton
-          isBookmarked={item.bookmarked}
+          isBookmarked={data.bookmarked}
           onToggle={toggleBookmarked}
         />
       </div>
       <div className="flex flex-row flex-grow max-w-80">
         <div className="flex flex-col w-full ml-2.5">
-          <div className="text-black font-medium">{item.title}</div>
-          <div className="text-gray-500">{item.company}</div>
+          <div className="text-black font-medium">{data.title}</div>
+          <div className="text-gray-500">{data.company}</div>
         </div>
       </div>
 
       <div
-        className={`${getStatusStyles(item.status)} flex justify-center w-36 px-3.5 py-2 rounded-3xl text-gray-700 font-medium`}
+        className={`${getStatusStyles(data.status)} flex justify-center w-36 px-3.5 py-2 rounded-3xl text-gray-700 font-medium`}
       >
         {item.status}
       </div>
       <div className="flex-1 flex justify-end">
         <div className="flex flex-row">
           <div className="flex flex-col items-end text-sm text-gray-500">
-            <div>Updated: {item.updatedAt}</div>
-            <div>Created: {item.createdAt}</div>
+            <div>Updated: {data.updatedAt}</div>
+            <div>Created: {data.createdAt}</div>
           </div>
           <div className="ml-2.5 relative">
             <OptionsButton onClick={toggleOptions} />
@@ -131,7 +139,7 @@ const ApplicationItem = ({ item }) => {
           {updateFormVis && (
             <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
               <UpdateForm
-                data={item}
+                data={data}
                 onSubmit={handleUpdate}
                 onClose={toggleUpdate}
               />

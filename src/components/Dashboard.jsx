@@ -12,6 +12,7 @@ function Dashboard() {
   const [isLoading, setIsLoading] = useState(false);
   const [applications, setApplications] = useState([]);
   const [composeFormVis, setComposeFormVis] = useState(false);
+  const [filterState, setFilterState] = useState();
   const [filterFormVis, setFilterFormVis] = useState(false);
   const [sortFormVis, setSortFormVis] = useState(false);
 
@@ -39,7 +40,6 @@ function Dashboard() {
   };
   const getFilteredApps = async (filter) => {
     setIsLoading(true);
-    console.log(filter);
 
     try {
       const response = await fetch(
@@ -54,7 +54,31 @@ function Dashboard() {
         }
       );
       const filteredApps = await response.json();
-      // setApplications(filteredApps);
+      setApplications(filteredApps);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const getSortedApps = async (filter, sort) => {
+    setIsLoading(true);
+
+    try {
+      const response = await fetch(
+        `http://localhost:3001/api/filter/products?_=${new Date().getTime()}`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({ ...filter, ...sort }),
+        }
+      );
+      const filteredApps = await response.json();
+      setApplications(filteredApps);
     } catch (e) {
       console.log(e);
     } finally {
@@ -102,14 +126,15 @@ function Dashboard() {
     setFilterFormVis(!filterFormVis);
   };
   const handleFilterSubmit = async (filter) => {
+    setFilterState(filter);
     await getFilteredApps(filter);
     toggleFilter();
   };
   const toggleSort = () => {
     setSortFormVis(!sortFormVis);
   };
-  const handleSortSubmit = () => {
-    console.log("Sort Submit");
+  const handleSortSubmit = async (sort) => {
+    await getSortedApps(filterState, sort);
     toggleSort();
   };
 
@@ -135,7 +160,7 @@ function Dashboard() {
         <div className="flex-1">Loading...</div>
       ) : (
         <div className="flex-1 overflow-y-auto">
-          <List items={applications} />
+          <List items={applications} getApps={getApps} />
         </div>
       )}
 
