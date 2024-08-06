@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import ProfileButton from "./ui/ProfileButton";
 import NotificationsButton from "./ui/NotificationsButton";
 import OptionsButton from "./ui/OptionsButton";
 import SearchBar from "./SearchBar";
 import Profile from "./Profile";
-import { getCurrentUser } from "../services/api/api";
+import TopbarContextMenu from "./TopbarContextMenu";
 
-function Topbar({ user }) {
+function Topbar({ user, toggleSettings }) {
   const [profileVis, setProfileVis] = useState(false);
+  const [contextMenuVis, setContextMenuVis] = useState(false);
 
   const handleSearchSubmit = () => {
     // TODO: Implement functionality
@@ -18,8 +19,8 @@ function Topbar({ user }) {
   const handleNotificationsClick = () => {
     // TODO: Implement functionality
   };
-  const handleOptionsClick = () => {
-    // TODO: Implement functionality
+  const toggleContextMenu = () => {
+    setContextMenuVis(!contextMenuVis);
   };
 
   return (
@@ -30,7 +31,14 @@ function Topbar({ user }) {
       <div className="flex flex-row mx-2.5">
         <ProfileButton onClick={toggleProfile} />
         <NotificationsButton onClick={handleNotificationsClick} />
-        <OptionsButton onClick={handleOptionsClick} />
+        <div className="relative">
+          <OptionsButton onClick={toggleContextMenu} />
+          {contextMenuVis && (
+            <div className="absolute mt-2 right-2 z-50">
+              <TopbarContextMenu toggleSettings={toggleSettings} />
+            </div>
+          )}
+        </div>
       </div>
       {profileVis && (
         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
