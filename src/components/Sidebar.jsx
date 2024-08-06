@@ -7,8 +7,9 @@ import ChecklistRtlRoundedIcon from "@mui/icons-material/ChecklistRtlRounded";
 import CalendarMonthSharpIcon from "@mui/icons-material/CalendarMonthSharp";
 import WorkRoundedIcon from "@mui/icons-material/WorkRounded";
 import { Check } from "@mui/icons-material";
+import { getFilteredApps } from "../services/api/api";
 
-function Sidebar() {
+function Sidebar({ setIsLoading, setApplications }) {
   const [expanded, setExpanded] = useState(true);
 
   const toggleSidebar = () => {
@@ -17,8 +18,8 @@ function Sidebar() {
   const handleAllAppsClick = () => {
     console.log("All Applications Sidebar Button Clicked");
   };
-  const handleBookmarkedClick = () => {
-    console.log("Bookmarked Sidebar Button Clicked");
+  const handleBookmarkedClick = async () => {
+    await getFilteredApps({ bookmarked: true }, setIsLoading, setApplications);
   };
   const handleStatusClick = () => {
     console.log("Status Sidebar Button Clicked");

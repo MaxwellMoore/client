@@ -144,6 +144,17 @@ function RegisterForm() {
             Register
           </button>
         </div>
+
+        <div className="px-4 py-3 rounded mt-4 bg-gray-200">
+          <p className="text-sm text-gray-700">Already have an account?</p>
+
+          <a
+            href="/auth/login"
+            className="text-sm text-blue-600 hover:text-blue-500"
+          >
+            Login
+          </a>
+        </div>
       </form>
     </div>
   );

@@ -38,7 +38,7 @@ function LoginForm() {
   };
 
   return (
-    <div className="relative w-80 min-w-fit max-w-md mx-auto p-4">
+    <div className="relative w-80 min-w-fit max-w-md h-fit mx-auto p-4">
       <form
         onSubmit={handleSubmit}
         className="bg-white rounded-lg shadow-md p-6"
@@ -99,10 +99,21 @@ function LoginForm() {
           </span>
           <a
             href={getGoogleOAuthUrl()}
-            className="flex justify-center items-center w-full p-2 mt-2 rounded-md text-white bg-red-500 hover:bg-red-600"
+            className="flex justify-center items-center w-full p-2 mt-2 rounded-md text-white bg-gray-600 hover:bg-gray-700"
           >
             Login with Google
           </a>
+
+          <div className="px-4 py-3 rounded mt-4 bg-gray-200">
+            <p className="text-sm text-gray-700">Don't have an account?</p>
+
+            <a
+              href="/auth/register"
+              className="text-sm text-blue-600 hover:text-blue-500"
+            >
+              Register
+            </a>
+          </div>
         </div>
       </form>
     </div>

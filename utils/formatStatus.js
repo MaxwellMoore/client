@@ -1,14 +1,14 @@
 export const getStatusStyles = (status) => {
   switch (status) {
     case "underReview":
-      return "bg-purple-100";
+      return "bg-gray-200";
     case "interview":
-      return "bg-purple-100";
+      return "bg-gray-200";
     case "accepted":
-      return "bg-purple-100";
+      return "bg-gray-200";
     case "rejected":
-      return "bg-purple-100";
+      return "bg-gray-200";
     default:
-      return "bg-purple-100";
+      return "bg-gray-200";
   }
 };

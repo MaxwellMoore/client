@@ -14,9 +14,8 @@ import FilterForm from "./FilterForm";
 import SortForm from "./SortForm";
 import List from "./List.applications";
 
-function Dashboard() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [applications, setApplications] = useState([]);
+function Dashboard({ isLoading, setIsLoading, applications, setApplications }) {
+  const [highlightDate, setHighlightDate] = useState(false);
   const [composeFormVis, setComposeFormVis] = useState(false);
   const [filterState, setFilterState] = useState();
   const [filterFormVis, setFilterFormVis] = useState(false);
@@ -32,6 +31,9 @@ function Dashboard() {
   };
   const handleOptionsClick = () => {
     // TODO: Implement functionality
+  };
+  const toggleHighlightDate = () => {
+    setHighlightDate(!highlightDate);
   };
   const toggleCompose = () => {
     setComposeFormVis(!composeFormVis);
@@ -67,6 +69,12 @@ function Dashboard() {
         </div>
         <div>
           <button
+            onClick={toggleHighlightDate}
+            className="mr-2 py-2 px-4 rounded-lg text-white bg-orange-500 hover:bg-orange-600"
+          >
+            H
+          </button>
+          <button
             onClick={toggleCompose}
             className="mr-2 py-2 px-4 rounded-lg text-red-50 bg-red-500 hover:bg-red-600"
           >
@@ -85,6 +93,7 @@ function Dashboard() {
         <div className="flex-1 overflow-y-auto">
           <List
             items={applications}
+            highlightDate={highlightDate}
             getApps={getApps}
             setIsLoading={setIsLoading}
             setApplications={setApplications}

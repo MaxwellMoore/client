@@ -6,8 +6,7 @@ import SearchBar from "./SearchBar";
 import Profile from "./Profile";
 import { getCurrentUser } from "../services/api/api";
 
-function Topbar() {
-  const [user, setUser] = useState();
+function Topbar({ user }) {
   const [profileVis, setProfileVis] = useState(false);
 
   const handleSearchSubmit = () => {
@@ -22,14 +21,6 @@ function Topbar() {
   const handleOptionsClick = () => {
     // TODO: Implement functionality
   };
-
-  useEffect(() => {
-    async function fetchData() {
-      const response = await getCurrentUser();
-      setUser(response);
-    }
-    fetchData();
-  }, []);
 
   return (
     <div className="flex flex-row flex-shrink-0 items-center w-full h-14 bg-blue-500">

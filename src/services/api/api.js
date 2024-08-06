@@ -35,6 +35,10 @@ export const getCurrentUser = async () => {
     console.log(e);
   }
 };
+
+//? Session Requests
+
+// Read
 export const getUser = async (data) => {
   try {
     const response = await fetch(`${BASE_URL}/api/login`, {
@@ -47,6 +51,22 @@ export const getUser = async (data) => {
     });
     const jsonResponse = await response.json();
     return response;
+  } catch (e) {
+    console.log(e);
+  }
+};
+// Delete
+export const deleteSession = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/sessions`, {
+      method: "DELETE",
+      credentials: "include",
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    const jsonResponse = await response.json();
+    return jsonResponse;
   } catch (e) {
     console.log(e);
   }

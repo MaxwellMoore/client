@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import XButton from "./ui/XButton";
+import { deleteSession } from "../services/api/api";
 
 const Profile = ({ user, onSubmit, onClose }) => {
   const [profile, setProfile] = useState({
@@ -31,10 +32,12 @@ const Profile = ({ user, onSubmit, onClose }) => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(profile);
-    if (onSubmit) onSubmit(profile); // Call onSubmit prop with the profile state
+    // console.log(profile);
+    // if (onSubmit) onSubmit(profile); // Call onSubmit prop with the profile state
+    await deleteSession();
+    window.location.href = "/auth/login";
   };
 
   return (
@@ -102,7 +105,7 @@ const Profile = ({ user, onSubmit, onClose }) => {
           type="submit"
           className="w-full py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring"
         >
-          Save Profile
+          Logout
         </button>
       </form>
     </div>
