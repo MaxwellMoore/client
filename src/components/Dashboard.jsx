@@ -76,8 +76,12 @@ function Dashboard() {
         </div>
       </div>
       {isLoading ? (
-        <div className="flex-1">Loading...</div>
-      ) : (
+        <div className="flex-1 flex justify-center items-center p-2 bg-purple-50">
+          <div className="flex justify-center p-2 rounded text-base text-purple-500 bg-purple-100">
+            Loading...
+          </div>
+        </div>
+      ) : applications.length != 0 ? (
         <div className="flex-1 overflow-y-auto">
           <List
             items={applications}
@@ -85,6 +89,14 @@ function Dashboard() {
             setIsLoading={setIsLoading}
             setApplications={setApplications}
           />
+        </div>
+      ) : (
+        <div className="flex-1 flex justify-center items-center p-2">
+          <div className="flex justify-center py-10 px-10 rounded border border-red-500 border-opacity-50 bg-red-100">
+            <span className="text-base text-red-500">
+              No Applications Found
+            </span>
+          </div>
         </div>
       )}
 

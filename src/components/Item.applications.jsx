@@ -63,7 +63,7 @@ const ApplicationItem = ({ item, getApps, setIsLoading, setApplications }) => {
       </div>
 
       <div
-        className={`${getStatusStyles(data.status)} flex justify-center w-36 px-3.5 py-2 rounded-3xl text-gray-700 font-medium`}
+        className={`${getStatusStyles(data.status)} flex justify-center w-36 px-3.5 py-2 rounded-3xl border border-purple-700 border-opacity-50 text-purple-700 font-normal`}
       >
         {item.status}
       </div>

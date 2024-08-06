@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import XButton from "./ui/XButton";
 
-const Profile = ({ onSubmit, onClose }) => {
+const Profile = ({ user, onSubmit, onClose }) => {
   const [profile, setProfile] = useState({
     profileImage: null,
     username: "",
@@ -53,9 +53,9 @@ const Profile = ({ onSubmit, onClose }) => {
         </div>
 
         <div className="mb-4 flex justify-center">
-          {profile.profileImage ? (
+          {user.picture ? (
             <img
-              src={profile.profileImage}
+              src={user.picture}
               alt="Profile"
               className="w-24 h-24 rounded-full object-cover"
             />
@@ -81,7 +81,7 @@ const Profile = ({ onSubmit, onClose }) => {
           <input
             type="text"
             name="username"
-            value={profile.username}
+            value={user.username}
             onChange={handleChange}
             className="w-full px-4 py-2 mt-2 border rounded focus:outline-none focus:ring"
           />
@@ -92,7 +92,7 @@ const Profile = ({ onSubmit, onClose }) => {
           <input
             type="email"
             name="email"
-            value={profile.email}
+            value={user.email}
             onChange={handleChange}
             className="w-full px-4 py-2 mt-2 border rounded focus:outline-none focus:ring"
           />

@@ -7,6 +7,7 @@ export const addUser = async (data) => {
   try {
     const response = await fetch(`${BASE_URL}/api/register`, {
       method: "POST",
+      credentials: "include",
       headers: {
         "content-type": "application/json",
       },
@@ -19,10 +20,26 @@ export const addUser = async (data) => {
   }
 };
 // Read
+export const getCurrentUser = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/me`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    const jsonResponse = await response.json();
+    return jsonResponse;
+  } catch (e) {
+    console.log(e);
+  }
+};
 export const getUser = async (data) => {
   try {
     const response = await fetch(`${BASE_URL}/api/login`, {
       method: "POST",
+      credentials: "include",
       headers: {
         "content-type": "application/json",
       },
@@ -38,7 +55,7 @@ export const getUser = async (data) => {
 //? Product Network Requests
 
 // Create
-export const addApp = async (item, setIsLoading, setApplications) => {
+export const addApp = async (payload, setIsLoading, setApplications) => {
   try {
     const response = await fetch("http://localhost:3001/api/products", {
       method: "POST",
@@ -46,10 +63,10 @@ export const addApp = async (item, setIsLoading, setApplications) => {
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify({ ...item }),
+      body: JSON.stringify({ ...payload }),
     });
-    const newApp = await response.json();
-    setApplications((prevApps) => [...prevApps, newApp]);
+    const jsonResponse = await response.json();
+    setApplications((prevApps) => [...prevApps, jsonResponse]);
   } catch (e) {
     console.log(e);
   } finally {
